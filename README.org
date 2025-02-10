@@ -1,0 +1,54 @@
+#+TITLE: Doom Emacs Configuration
+#+AUTHOR: newtolinux23
+#+DATE: <2025-02-09>
+#+OPTIONS: toc:nil
+
+[[https://www.maketecheasier.com/assets/uploads/2023/11/install-doom-emacs-00-featured-image-1.jpg]]
+
+* 🛠 Overview
+This is my personal Doom Emacs configuration, customized primarily for:
+- 📝 Writing documents efficiently
+- 📄 Exporting to PDF via LaTeX
+- 🏗 Structured note-taking with Org mode
+
+Doom Emacs provides a minimal yet powerful environment for writing, and I have customized it to enhance productivity in document creation.
+
+* 🚀 Features
+My Doom configuration includes:
+
+- **Org mode enhancements**: Better organization, easy exporting, and integrations
+- **LaTeX support**: Direct PDF export using `org-latex-export-to-pdf`
+- **Markdown & JSON support**: For handling different document formats
+- **PDF Tools**: Enhanced PDF reading and annotation inside Emacs
+- **Spell & Grammar Checking**: Integrated Flyspell and LanguageTool for better writing
+- **Workspaces**: For managing multiple writing projects
+
+* 📦 Installed Doom Modules
+I use the following Doom Emacs modules for writing:
+
+**Editor & UI:**
+- =evil= +everywhere → Vim keybindings everywhere
+- =word-wrap= → Soft wrapping with proper indentation
+- =modeline= → Snazzy status bar
+- =workspaces= → Persistent workspace support
+
+**Writing & Export:**
+- =org +pretty +noter +roam2 +pandoc +dragndrop +journal= → Enhanced Org mode
+- =latex= → Writing academic papers with LaTeX
+- =markdown= → Support for markdown documents
+
+**Utilities:**
+- =pdf= → Better PDF viewing inside Emacs
+- =spell +flyspell= → Spell checking for writing
+- =grammar= → Grammar checking support
+
+* 📄 LaTeX PDF Export
+I have configured Org mode to allow seamless LaTeX exports. To generate a PDF:
+
+1. Write your document in an Org file.
+2. Use `C-c C-e l o` to export it to a PDF.
+3. Ensure =texlive= and required LaTeX packages are installed.
+
+If the exported PDF appears in **dark mode**, it may be due to `pdf-tools`. You can disable it with:
+```elisp
+(add-hook 'pdf-view-mode-hook (lambda () (pdf-view-midnight-minor-mode -1)))

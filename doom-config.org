@@ -1,0 +1,247 @@
+#+TITLE: Doom Emacs Configuration
+#+AUTHOR: newtolinux23
+#+PROPERTY: header-args :tangle ~/.doom.d/init.el
+#+OPTIONS: toc:t num:t ^:nil
+
+* 🎯 Introduction
+
+This is my **literate configuration** for **Doom Emacs**, automatically tangled to `~/.doom.d/init.el`.
+The setup is optimized for:
+
+- 📝 **Writing**
+- 📄 **LaTeX Export**
+- 📖 **Document Management**
+- 📑 **Org-mode Productivity**
+
+This document contains all my configurations in a structured format, ensuring that everything remains maintainable and well-organized.
+
+---
+
+* ⚙️ Doom Modules Configuration
+
+These are the Doom modules I use, defining the core features of my Doom Emacs setup.
+
+**📌 Note:** Remember to run `doom sync` after modifying this configuration.
+
+#+BEGIN_SRC emacs-lisp :tangle ~/.doom.d/init.el
+(doom! :input
+       ;; Additional language input methods
+
+       :completion
+       company           ; The ultimate code completion backend
+       vertico           ; The modern completion framework
+
+       :ui
+       doom              ; Doom's sleek UI
+       doom-dashboard    ; Custom startup dashboard
+       hl-todo           ; Highlight TODOs
+       modeline          ; Enhanced status bar
+       ophints           ; Highlight affected regions
+       (popup +defaults) ; Manage popup windows
+       (vc-gutter +pretty) ; Show Git changes in the fringe
+       vi-tilde-fringe   ; Indicate end of buffer
+       workspaces        ; Multiple workspaces support
+
+       :editor
+       (evil +everywhere); Vim keybindings for everything
+       file-templates    ; Auto-generate file templates
+       fold              ; Code folding
+       snippets          ; Code snippets
+       word-wrap         ; Soft word wrapping
+
+       :emacs
+       dired             ; Advanced file manager
+       electric          ; Smart indentation
+       undo              ; Persistent undo
+       vc                ; Version control integration
+
+       :term
+       eshell            ; The elisp shell
+
+       :checkers
+       syntax            ; Syntax checking
+       (spell +flyspell) ; Spell checking
+       grammar           ; Grammar checking
+
+       :tools
+       (eval +overlay)   ; Evaluate code inside Emacs
+       lookup            ; Documentation lookup
+       pdf               ; Enhanced PDF support
+
+       :lang
+       (org +pretty +noter +roam2 +pandoc +dragndrop +journal) ; Powerful Org-mode setup
+       json              ; JSON support
+       latex             ; LaTeX support for writing
+       markdown          ; Markdown editing
+       sh                ; Shell scripting
+
+       :config
+       (default +bindings +smartparens)) ; Default Doom Emacs configuration
+#+END_SRC
+
+---
+
+* 👤 User Information
+
+This section sets the user name and email for Git and Emacs-related operations.
+
+#+BEGIN_SRC emacs-lisp :tangle ~/.doom.d/config.el
+(setq user-full-name "Rob Alicea"
+      user-mail-address "train@idoneitatemlife.com")
+#+END_SRC
+
+---
+
+* 🎯 Custom Configurations
+
+**🔹 Auto-Tangle on Save**
+Automatically tangles this Org file whenever I save it.
+
+#+BEGIN_SRC emacs-lisp :tangle ~/.doom.d/config.el
+(defun my/org-babel-tangle-on-save ()
+  "Tangle the current Org file on save."
+  (when (string-equal (file-name-extension buffer-file-name) "org")
+    (org-babel-tangle)))
+
+(add-hook 'org-mode-hook
+          (lambda ()
+            (add-hook 'after-save-hook #'my/org-babel-tangle-on-save 'append 'local)))
+#+END_SRC
+
+---
+
+**🔹 Disable PDF Midnight Mode**
+Ensures that PDFs always use a white background instead of dark mode.
+
+#+BEGIN_SRC emacs-lisp :tangle ~/.doom.d/config.el
+(setq pdf-view-midnight-colors '("black" . "white"))
+(add-hook 'pdf-view-mode-hook (lambda () (pdf-view-midnight-minor-mode -1)))
+#+END_SRC
+
+---
+
+* 🎨 UI Customizations
+
+These settings tweak the appearance and usability of Emacs.
+
+#+BEGIN_SRC emacs-lisp :tangle ~/.doom.d/config.el
+;; Set JetBrains Mono as the default font
+(setq doom-font (font-spec :family "JetBrains Mono" :size 16 :weight 'regular)
+      doom-variable-pitch-font (font-spec :family "JetBrains Mono" :size 16)
+      doom-big-font (font-spec :family "JetBrains Mono" :size 20))
+
+;; Set default frame properties
+(setq default-frame-alist '((font . "JetBrainsMono Nerd Font-16") (height . 50) (width . 100)))
+
+;; Set Monokai Pro theme
+(setq doom-theme 'doom-monokai-pro)
+
+;; UI Enhancements
+(setq display-line-numbers-type t
+      doom-modeline-icon t
+      doom-modeline-height 25
+      inhibit-startup-screen t)
+
+(global-display-line-numbers-mode t)
+(tool-bar-mode -1)
+(scroll-bar-mode -1)
+(set-frame-parameter (selected-frame) 'alpha '(98 98))
+(add-to-list 'default-frame-alist '(alpha 98 98))
+(add-to-list 'initial-frame-alist '(fullscreen . maximized))
+(add-to-list 'default-frame-alist '(fullscreen . maximized))
+#+END_SRC
+
+---
+
+* 🛠 Installed Packages
+
+Doom Emacs allows **package management** via `packages.el`. These are the additional packages I use.
+
+#+BEGIN_SRC emacs-lisp :tangle ~/.doom.d/packages.el
+;; === UI Enhancements ===
+(package! doom-themes)
+(package! dracula-theme)
+(package! all-the-icons)
+(package! dashboard)
+
+;; === Writing & Focus ===
+(package! writeroom-mode)
+(package! focus)
+(package! olivetti)
+
+;; === Org-mode Enhancements ===
+(package! org-modern)
+(package! org-roam)
+(package! org-roam-ui)
+(package! org-noter)
+(package! org-tanglesync)
+(package! org-pandoc-import
+  :recipe (:host github :repo "tecosaur/org-pandoc-import"))
+
+;; === LaTeX & PDF Tools ===
+(package! auctex)
+(package! auctex-latexmk)
+(package! cdlatex)
+(package! citar)
+(package! citar-org-roam)
+(package! pdf-tools)
+
+;; === Spell Checking & Grammar ===
+(package! flyspell-correct)
+(package! flyspell-correct-ivy)
+(package! languagetool)
+
+;; === Markdown & Export Tools ===
+(package! markdown-mode)
+(package! grip-mode)
+
+;; === File Search & Navigation ===
+(package! consult)
+(package! consult-org-roam)
+(package! embark)
+(package! marginalia)
+
+;; === Version Control ===
+(package! magit)
+
+;; === Completion ===
+(package! company)
+#+END_SRC
+
+---
+
+* ⚙️ Customization Variables
+
+These variables store **user-specific settings** and **package preferences**.
+
+#+BEGIN_SRC emacs-lisp :tangle ~/.doom.d/custom.el
+(custom-set-variables
+ '(package-selected-packages
+   '(evil-embrace evil-tex evil-org nix-update nix-buffer nixpkgs-fmt
+     helm-nixos-options org-tanglesync org-auto-tangle)))
+
+(custom-set-faces
+ ;; Custom faces, if needed.
+ )
+#+END_SRC
+
+---
+
+* 📌 Summary
+This document **structures and maintains** my Doom Emacs configuration in a **literate programming format** using Org mode.
+
+✅ **Well-organized sections** for readability.
+✅ **Code is neatly formatted** for maintainability.
+✅ **Explains each module and setting** without changing configurations.
+
+Now, Doom Emacs is **fully documented and easy to tweak**! 🚀
+
+---
+
+### **🔹 What Changed?**
+- **Added clear section headers** for better navigation.
+- **Formatted code blocks** for consistency.
+- **Reorganized user information** into a dedicated section.
+- **Improved readability** while keeping everything functionally the same.
+
+This ensures your Doom Emacs configuration is **clean, structured, and easy to manage** while maintaining the **exact same functionality**. 🚀 Let me know if you need further refinements!🔥

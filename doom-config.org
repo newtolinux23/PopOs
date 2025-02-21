@@ -57,6 +57,7 @@ These are the Doom modules I use, defining the core features of my Doom Emacs se
 
        :term
        eshell            ; The elisp shell
+       vterm
 
        :checkers
        syntax            ; Syntax checking
@@ -126,9 +127,9 @@ These settings tweak the appearance and usability of Emacs.
 
 #+BEGIN_SRC emacs-lisp :tangle ~/.doom.d/config.el
 ;; Set JetBrains Mono as the default font
-(setq doom-font (font-spec :family "JetBrains Mono" :size 16 :weight 'regular)
-      doom-variable-pitch-font (font-spec :family "JetBrains Mono" :size 16)
-      doom-big-font (font-spec :family "JetBrains Mono" :size 20))
+(setq doom-font (font-spec :family "JetBrains Mono" :size 12 :weight 'regular)
+      doom-variable-pitch-font (font-spec :family "JetBrains Mono" :size 12)
+      doom-big-font (font-spec :family "JetBrains Mono" :size 16))
 
 ;; Set default frame properties
 (setq default-frame-alist '((font . "JetBrainsMono Nerd Font-16") (height . 50) (width . 100)))
